@@ -23,19 +23,16 @@ public class ServiceController {
 	public void generateServices() {
 
 		Services s = new Services();
-		s.setId(1L);
 		s.setIcon("cog");
 		s.setText("Lorem ipsum");
 		s.setTitle("Prvi");
 		
 		Services s2 = new Services();
-		s2.setId(2L);
 		s2.setIcon("bars");
 		s2.setText("Dolor sit");
 		s2.setTitle("Amet");
 		
 		Services s3 = new Services();
-		s3.setId(3L);
 		s3.setIcon("search");
 		s3.setText("Dolor awdasa");
 		s3.setTitle("Treci");
