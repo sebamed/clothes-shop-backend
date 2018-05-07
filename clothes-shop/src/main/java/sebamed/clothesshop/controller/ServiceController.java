@@ -15,13 +15,13 @@ import sebamed.clothesshop.service.ServiceService;
 
 @RestController
 @RequestMapping("/api/services")
+@CrossOrigin("http://localhost:4200")
 public class ServiceController {
 
 	@Autowired
 	ServiceService serviceService;
 
 	@GetMapping("/")
-	@CrossOrigin("http://localhost:4200")
 	public List<Services> getAllServices(){
 		return this.serviceService.getAll();
 	}
