@@ -1,18 +1,27 @@
 package sebamed.clothesshop.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Services")
 public class Services {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name = "services_title", length = 255)
 	private String title;
+	
+	@Column(name = "services_text", length = 255)
 	private String text;
+	
+	@Column(name = "services_icon", length = 255)
 	private String icon;
 
 	public Services() {
