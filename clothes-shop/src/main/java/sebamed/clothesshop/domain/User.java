@@ -20,8 +20,8 @@ public class User {
 	@Column(name = "first_name", length = 255)
 	private String firstName;
 	
-	@Column(name = "sur_name", length = 255)
-	private String surName;
+	@Column(name = "last_name", length = 255)
+	private String lastName;
 	
 	@Column(name = "username", length = 255)
 	private String username;
@@ -40,7 +40,7 @@ public class User {
 		super();
 		this.id = id;
 		this.firstName = firstName;
-		this.surName = surName;
+		this.lastName = surName;
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -64,11 +64,11 @@ public class User {
 	}
 
 	public String getSurName() {
-		return surName;
+		return lastName;
 	}
 
 	public void setSurName(String surName) {
-		this.surName = surName;
+		this.lastName = surName;
 	}
 
 	public String getUsername() {
