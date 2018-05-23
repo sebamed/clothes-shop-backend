@@ -9,5 +9,7 @@ import sebamed.clothesshop.domain.Role;
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
 	Role findOneById(Long id);
+	
+	Role findOneByName(String name);
 
 }

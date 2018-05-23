@@ -35,6 +35,10 @@ public class User {
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "role_id", nullable = true)
 	private Role role;
+	
+	public User() {
+		
+	}
 
 	public User(Long id, String firstName, String surName, String username, String password, String email, Role role) {
 		super();
@@ -63,11 +67,11 @@ public class User {
 		this.firstName = firstName;
 	}
 
-	public String getSurName() {
+	public String getLastName() {
 		return lastName;
 	}
 
-	public void setSurName(String surName) {
+	public void setLastName(String surName) {
 		this.lastName = surName;
 	}
 

@@ -29,5 +29,6 @@ public class ServiceService {
 	public List<Services> getAll(){
 		return this.serviceRepository.findAll();
 	}
+
 	
 }
