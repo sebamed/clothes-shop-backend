@@ -10,7 +10,7 @@ import sebamed.clothesshop.domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	User findOne(Long id);
+	User findOneById(Long id);
 	
 	List<User> findAll();
 	

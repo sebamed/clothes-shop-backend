@@ -19,9 +19,11 @@ public class Role {
 	@Column(name = "role_name")
 	private String name;
 	
-	public Role(Long id, String name) {
-		super();
-		this.id = id;
+	public Role() {
+		
+	}
+	
+	public Role(String name) {
 		this.name = name;
 	}
 

@@ -1,5 +1,7 @@
 package sebamed.clothesshop.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +20,16 @@ public class RoleService {
 	UserRepository userRepository;
 	
 	public Role findOne(Long id) {
-		return this.roleRepository.findOne(id);
+		return this.roleRepository.findOneById(id);
 	}
 	
+	@Transactional
 	public Role save(Role role) {
 		return this.roleRepository.save(role);
 	}
 	
 	public void remove(Long id) {
-		Role role = this.roleRepository.findOne(id);
+		Role role = this.roleRepository.findOneById(id);
 		if(role != null) {
 			for(User user : this.userRepository.findAll()) {
 				if(user.getRole().equals(role)) {

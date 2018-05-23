@@ -15,7 +15,7 @@ public class UserService {
 	UserRepository userRepository;
 	
 	public User findOne(Long id) {
-		return this.userRepository.findOne(id);
+		return this.userRepository.findOneById(id);
 	}
 	
 	public List<User> findAll(){
@@ -23,10 +23,14 @@ public class UserService {
 	}
 	
 	public void remove(Long id) {
-		User user = this.userRepository.findOne(id);
+		User user = this.userRepository.findOneById(id);
 		if(user != null) {
 			this.userRepository.delete(user);
 		}
+	}
+	
+	public User save(User user) {
+		return this.userRepository.save(user);
 	}
 	
 	

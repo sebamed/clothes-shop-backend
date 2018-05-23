@@ -8,6 +8,6 @@ import sebamed.clothesshop.domain.Role;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-	Role findOne(Long id);
+	Role findOneById(Long id);
 
 }
