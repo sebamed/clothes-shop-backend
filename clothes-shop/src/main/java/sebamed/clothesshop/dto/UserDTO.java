@@ -4,6 +4,7 @@ import sebamed.clothesshop.domain.Role;
 
 public class UserDTO {
 
+	private Long id;
 	private String username;
 	private String firstName;
 	private String lastName;
@@ -11,13 +12,23 @@ public class UserDTO {
 	private String email;
 	private Role role;
 
-	public UserDTO(String username, String firstName, String lastName, String password, String email, Role role) {
+	public UserDTO(Long id, String username, String firstName, String lastName, String password, String email,
+			Role role) {
+		this.id = id;
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
 		this.email = email;
 		this.role = role;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getUsername() {
@@ -67,9 +78,5 @@ public class UserDTO {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	
-	
-	
-	
-	
+
 }
