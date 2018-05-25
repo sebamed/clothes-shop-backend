@@ -15,13 +15,13 @@ public class Services {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "services_title", length = 255)
+	@Column(name = "services_title")
 	private String title;
 	
-	@Column(name = "services_text", length = 255)
+	@Column(name = "services_text")
 	private String text;
 	
-	@Column(name = "services_icon", length = 255)
+	@Column(name = "services_icon")
 	private String icon;
 
 	public Services() {
