@@ -17,6 +17,10 @@ public class Image {
 
 	@Column(name = "local_url")
 	private String url;
+	
+	public Image() {
+		
+	}
 
 	public Image(Long id, String url) {
 		super();
