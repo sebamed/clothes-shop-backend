@@ -28,8 +28,8 @@ public class ImageStorageAPI {
 	public ResponseEntity<ImageDTO> handleUploadImage(@RequestParam("file") MultipartFile file,
 			@RequestParam("text") String text){
 		try {
-			this.imageStorageService.init();
-			this.imageStorageService.store(file);
+//			this.imageStorageService.init();
+//			this.imageStorageService.store(file);
 			
 		} catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

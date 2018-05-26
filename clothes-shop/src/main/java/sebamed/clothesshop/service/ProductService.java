@@ -1,8 +1,9 @@
 package sebamed.clothesshop.service;
 
+import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import sebamed.clothesshop.domain.Image;
 import sebamed.clothesshop.domain.Product;
@@ -29,7 +30,7 @@ public class ProductService {
 		return this.productRepository.findOneById(id);
 	}
 	
-	public Product addImage(ProductDTO productDto, MultipartFile file) {
+	public Product addImage(ProductDTO productDto, File file) {
 		Product product = new Product();
 		product.setAdmin(productDto.getAdmin());
 		product.setCurrency(productDto.getCurrency());
@@ -42,7 +43,7 @@ public class ProductService {
 		
 		this.imageStorageService.store(file);
 		Image image = new Image();
-		image.setUrl(file.getOriginalFilename());
+		image.setUrl(file.getName());
 		this.imageService.save(image);
 		
 		product.setImage(image);
