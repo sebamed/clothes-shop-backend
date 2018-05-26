@@ -1,14 +1,13 @@
 package sebamed.clothesshop.service;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ public class ImageStorageService {
 
 	public void store(File file) {
 		try {
-			Files.copy(new FileInputStream(file), this.rootLocation);
+			FileUtils.moveFileToDirectory(file, new File(this.rootLocation.toString()), false);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

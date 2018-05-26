@@ -1,8 +1,8 @@
 package sebamed.clothesshop.controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,8 +31,11 @@ public class ProductAPI {
 	@PostMapping("/add")
 	public ResponseEntity<Product> handleAddProduct(@RequestParam("file") MultipartFile file, @RequestParam("productDto") Object data) {
 		try {
-			File image = new File(file.getOriginalFilename());
-			file.transferTo(image);
+			File image = new File(System.currentTimeMillis() + "_" + file.getOriginalFilename());
+			image.createNewFile(); 
+		    FileOutputStream fos = new FileOutputStream(image); 
+		    fos.write(file.getBytes());
+		    fos.close(); 
 			
 			ProductDTO productDto = new ObjectMapper().readValue(data.toString(), ProductDTO.class); // kastovanje
 			
