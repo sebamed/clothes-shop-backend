@@ -14,9 +14,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import sebamed.clothesshop.domain.Image;
 import sebamed.clothesshop.dto.ImageDTO;
-import sebamed.clothesshop.repository.ImageRepository;
 
 @Service
 public class ImageStorageService {
@@ -26,7 +24,6 @@ public class ImageStorageService {
 	public void store(MultipartFile file) {
 		try {
 			Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
-			
 		} catch (Exception e) {
 			throw new RuntimeException("Fail with upload!");
 		}

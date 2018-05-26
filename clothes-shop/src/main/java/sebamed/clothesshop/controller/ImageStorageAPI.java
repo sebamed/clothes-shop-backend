@@ -25,7 +25,8 @@ public class ImageStorageAPI {
 	ImageService imageService;
 	
 	@PostMapping("/upload")
-	public ResponseEntity<ImageDTO> handleUploadImage(@RequestParam("file") MultipartFile file){
+	public ResponseEntity<ImageDTO> handleUploadImage(@RequestParam("file") MultipartFile file,
+			@RequestParam("text") String text){
 		try {
 			this.imageStorageService.init();
 			this.imageStorageService.store(file);
@@ -33,7 +34,6 @@ public class ImageStorageAPI {
 		} catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
 		Image image = new Image();
 		image.setUrl(file.getOriginalFilename());
 		this.imageService.save(image);
