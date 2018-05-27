@@ -1,8 +1,6 @@
 package sebamed.clothesshop.dto;
 
-import java.util.List;
-
-import sebamed.clothesshop.domain.Image;
+import sebamed.clothesshop.domain.Category;
 import sebamed.clothesshop.domain.User;
 
 public class ProductDTO {
@@ -15,6 +13,8 @@ public class ProductDTO {
 	private User admin;
 	private boolean isPublic;
 	private String description;
+	private Category category;
+
 
 	public ProductDTO() {
 		
@@ -31,6 +31,14 @@ public class ProductDTO {
 		this.admin = admin;
 		this.isPublic = isPublic;
 		this.description = description;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public String getTitle() {
@@ -101,8 +109,10 @@ public class ProductDTO {
 	public String toString() {
 		return "ProductDTO [title=" + title + ", priceMain=" + priceMain + ", priceDecimal=" + priceDecimal
 				+ ", currency=" + currency + ", discount=" + discount + ", admin=" + admin + ", isPublic=" + isPublic
-				+ ", description=" + description + "]";
-	}	
+				+ ", description=" + description + ", category=" + category + "]";
+	}
+
+	
 	
 	
 }

@@ -20,7 +20,6 @@ public class ImageStorageService {
 	private final Path rootLocation = Paths.get("src/main/resources/static/product-images");
 
 	public void store(File file) {
-		this.init();
 		try {
 			FileUtils.moveFileToDirectory(file, new File(this.rootLocation.toString()), false);
 		} catch (IOException e) {

@@ -38,6 +38,10 @@ public class Product {
 	@JoinColumn(name = "user_id")
 	private User admin;
 
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "category_id", nullable = true)
+	private Category category;
+
 	@ManyToOne(optional = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "image_id", nullable = true)
 	private Image image;
@@ -53,7 +57,7 @@ public class Product {
 	}
 
 	public Product(Long id, String title, int priceMain, int priceDecimal, String currency, int discount, User admin,
-			Image image, boolean isPublic, String description) {
+			Category category, Image image, boolean isPublic, String description) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -62,6 +66,7 @@ public class Product {
 		this.currency = currency;
 		this.discount = discount;
 		this.admin = admin;
+		this.category = category;
 		this.image = image;
 		this.isPublic = isPublic;
 		this.description = description;
@@ -121,6 +126,14 @@ public class Product {
 
 	public void setAdmin(User admin) {
 		this.admin = admin;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public Image getImage() {

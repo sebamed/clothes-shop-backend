@@ -45,6 +45,7 @@ public class ProductService {
 		product.setPriceMain(productDto.getPriceMain());
 		product.setTitle(productDto.getTitle());
 		product.setPublic(productDto.getIsPublic());
+		product.setCategory(productDto.getCategory());
 		
 		this.imageStorageService.store(file);
 		Image image = new Image();
