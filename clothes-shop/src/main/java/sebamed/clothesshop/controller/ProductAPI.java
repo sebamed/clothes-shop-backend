@@ -3,6 +3,7 @@ package sebamed.clothesshop.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,16 @@ public class ProductAPI {
 		Product p = this.productService.findOneById(id);
 		if (p != null) {
 			return new ResponseEntity<Product>(p, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/")
+	public ResponseEntity<List<Product>> handleGetAllProducts() {
+		List<Product> p = this.productService.findAll();
+		if (p.size() > 0) {
+			return new ResponseEntity<List<Product>>(p, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

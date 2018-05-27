@@ -1,6 +1,7 @@
 package sebamed.clothesshop.service;
 
 import java.io.File;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,10 @@ public class ProductService {
 	
 	public Product save(Product product) {
 		return this.productRepository.save(product);
+	}
+	
+	public List<Product> findAll(){
+		return this.productRepository.findAll();
 	}
 	
 	public Product findOneById(Long id) {
