@@ -26,7 +26,7 @@ public class ProductService {
 		return this.productRepository.save(product);
 	}
 	
-	public Product findOne(Long id) {
+	public Product findOneById(Long id) {
 		return this.productRepository.findOneById(id);
 	}
 	
