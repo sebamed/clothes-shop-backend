@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,6 +50,16 @@ public class ProductAPI {
 		} catch (IOException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@PostMapping("/delete")
+	public ResponseEntity<List<Product>> handleDeleteProducts(@RequestBody List<Product> products){
+		for(Product p : products) {
+			System.out.println(p.toString());
+			this.productService.remove(p.getId());
+		}
+		
+		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")

@@ -28,11 +28,6 @@ public class ImageService {
 	public void remove(Long id) {
 		Image image = this.imageRepository.findOneById(id);
 		if(image != null) {
-			for(Product p : this.productRepository.findAll()) {
-				if(p.getImage().equals(image)) {
-					p.setImage(null);
-				}
-			}
 			this.imageRepository.delete(image);
 		}		
 	}
