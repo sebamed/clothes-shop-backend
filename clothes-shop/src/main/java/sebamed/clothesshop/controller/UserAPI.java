@@ -1,5 +1,7 @@
 package sebamed.clothesshop.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +25,31 @@ public class UserAPI {
 	@Autowired
 	UserService userService;
 	
+	@PostMapping("/update-role")
+	public ResponseEntity<UserDTO> handleUpdateRole(@RequestBody UserDTO user){
+		User u = this.userService.findOne(user.getId());
+		if(u != null) {
+			u.setRole(user.getRole());
+			this.userService.save(u);
+			return new ResponseEntity<UserDTO>(new UserDTO(u.getId(), u.getUsername(), u.getFirstName(), u.getLastName(), u.getPassword(), u.getEmail(), u.getRole()), HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);	
+	}
+	
+	@PostMapping("/delete")
+	public ResponseEntity<List<UserDTO>> handleDelete(@RequestBody List<UserDTO> users){
+		for(UserDTO userDto : users) {
+			this.userService.remove(userDto.getId());
+		}
+		return new ResponseEntity<List<UserDTO>>(users, HttpStatus.OK);
+	}
+	
 	@PostMapping("/login")
 	public ResponseEntity<UserDTO> handleLogin(@RequestBody UserLoginDTO loginDto) {
 		User user = this.userService.login(loginDto);
 		if(user != null) {
-			return new ResponseEntity<>(new UserDTO(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getPassword(), user.getEmail(), user.getRole()), HttpStatus.OK);
+			return new ResponseEntity<UserDTO>(new UserDTO(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getPassword(), user.getEmail(), user.getRole()), HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -55,7 +55,6 @@ public class ProductAPI {
 	@PostMapping("/delete")
 	public ResponseEntity<List<Product>> handleDeleteProducts(@RequestBody List<Product> products){
 		for(Product p : products) {
-			System.out.println(p.toString());
 			this.productService.remove(p.getId());
 		}
 		
