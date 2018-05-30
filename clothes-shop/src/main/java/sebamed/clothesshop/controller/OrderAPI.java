@@ -81,6 +81,7 @@ public class OrderAPI {
 				o.setDelivered(orderDto.getDelivered());
 				o.setDescription(orderDto.getDescription());
 				o.addProducts(orderDto.getProducts());
+				this.orderService.save(o);
 				return new ResponseEntity<OrderDTO>(orderDto, HttpStatus.OK);
 			}
 		} catch (IOException e) {

@@ -3,6 +3,7 @@ package sebamed.clothesshop.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,8 +27,8 @@ public class Order {
 	@Column(name = "description")
 	private String description;
 
-	@JoinTable(name = "order_products")
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+	@JoinTable
 	private List<Product> products;
 
 	@ManyToOne(optional = true)
@@ -76,9 +77,9 @@ public class Order {
 	public void setProducts(List<Product> prooducts) {
 		this.products = prooducts;
 	}
-	
+
 	public void addProducts(List<Product> products) {
-		for(Product p : products) {
+		for (Product p : products) {
 			this.products.add(p);
 		}
 	}
