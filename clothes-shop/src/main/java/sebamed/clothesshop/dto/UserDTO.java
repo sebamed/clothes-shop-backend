@@ -1,5 +1,6 @@
 package sebamed.clothesshop.dto;
 
+import sebamed.clothesshop.domain.Order;
 import sebamed.clothesshop.domain.Role;
 
 public class UserDTO {
@@ -11,13 +12,14 @@ public class UserDTO {
 	private String password;
 	private String email;
 	private Role role;
+	private Order order;
 
 	public UserDTO() {
-		
+
 	}
-	
+
 	public UserDTO(Long id, String username, String firstName, String lastName, String password, String email,
-			Role role) {
+			Role role, Order order) {
 		this.id = id;
 		this.username = username;
 		this.firstName = firstName;
@@ -25,6 +27,15 @@ public class UserDTO {
 		this.password = password;
 		this.email = email;
 		this.role = role;
+		this.order = order;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	public Long getId() {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import sebamed.clothesshop.domain.Order;
 import sebamed.clothesshop.domain.User;
+import sebamed.clothesshop.dto.OrderDTO;
 import sebamed.clothesshop.repository.OrderRepository;
 import sebamed.clothesshop.repository.UserRepository;
 
@@ -25,6 +26,13 @@ public class OrderService {
 	
 	public Order save(Order order) {
 		return this.orderRepository.save(order);
+	}
+	
+	
+	public Order createNew(User user) {
+		Order o = new Order();
+		o.setUser(user);
+		return this.orderRepository.save(o);
 	}
 	
 	public List<Order> findAll(){

@@ -20,6 +20,9 @@ public class UserService {
 	@Autowired
 	RoleRepository roleRepository;
 	
+	@Autowired
+	OrderService orderService;
+	
 	public User findOne(Long id) {
 		return this.userRepository.findOneById(id);
 	}
@@ -85,6 +88,8 @@ public class UserService {
 			user.setLastName(registerDTO.getLastName());
 			user.setPassword(registerDTO.getPassword());
 			user.setRole(this.roleRepository.findOneByName("user"));
+			this.userRepository.save(user);
+			user.setOrder(this.orderService.createNew(user));
 			return this.userRepository.save(user);
 		}
 	}

@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Users")
 public class User {
@@ -16,31 +18,37 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "first_name", length = 255)
 	private String firstName;
-	
+
 	@Column(name = "last_name", length = 255)
 	private String lastName;
-	
+
 	@Column(name = "username", length = 255)
 	private String username;
-	
+
 	@Column(name = "password", length = 255)
 	private String password;
-		
+
 	@Column(name = "email", length = 255)
 	private String email;
-	
+
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "role_id", nullable = true)
 	private Role role;
-	
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "order_id", nullable = true)
+	@JsonIgnore
+	private Order order;
+
 	public User() {
-		
+
 	}
 
-	public User(Long id, String firstName, String surName, String username, String password, String email, Role role) {
+	public User(Long id, String firstName, String surName, String username, String password, String email, Role role,
+			Order order) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -49,6 +57,15 @@ public class User {
 		this.password = password;
 		this.email = email;
 		this.role = role;
+		this.order = order;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	public Long getId() {
@@ -112,8 +129,5 @@ public class User {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
 				+ ", password=" + password + ", email=" + email + ", role=" + role + "]";
 	}
-	
-	
-	
-	
+
 }

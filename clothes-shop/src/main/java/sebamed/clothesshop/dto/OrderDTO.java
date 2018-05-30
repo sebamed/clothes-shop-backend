@@ -62,7 +62,7 @@ public class OrderDTO {
 		this.products = products;
 	}
 
-	public boolean isDelivered() {
+	public boolean getDelivered() {
 		return delivered;
 	}
 
@@ -70,4 +70,12 @@ public class OrderDTO {
 		this.delivered = delivered;
 	}
 
+	@Override
+	public String toString() {
+		return "OrderDTO [id=" + id + ", description=" + description + ", user=" + user + ", products=" + products
+				+ ", delivered=" + delivered + "]";
+	}
+
+	
+	
 }

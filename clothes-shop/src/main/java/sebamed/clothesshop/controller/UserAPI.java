@@ -34,7 +34,7 @@ public class UserAPI {
 			u.setRole(user.getRole());
 			this.userService.save(u);
 			return new ResponseEntity<UserDTO>(new UserDTO(u.getId(), u.getUsername(), u.getFirstName(),
-					u.getLastName(), u.getPassword(), u.getEmail(), u.getRole()), HttpStatus.OK);
+					u.getLastName(), u.getPassword(), u.getEmail(), u.getRole(), u.getOrder()), HttpStatus.OK);
 		}
 
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -44,7 +44,7 @@ public class UserAPI {
 	public ResponseEntity<List<UserDTO>> handleGetAllUsers() {
 		List<UserDTO> usersDto = new ArrayList<UserDTO>();
 		for (User u : this.userService.findAll()) {
-			usersDto.add(new UserDTO(u.getId(), u.getUsername(), u.getFirstName(), u.getLastName(), u.getPassword(), u.getEmail(), u.getRole()));
+			usersDto.add(new UserDTO(u.getId(), u.getUsername(), u.getFirstName(), u.getLastName(), u.getPassword(), u.getEmail(), u.getRole(), u.getOrder()));
 		}
 		return new ResponseEntity<List<UserDTO>>(usersDto, HttpStatus.OK);
 	}
@@ -62,7 +62,7 @@ public class UserAPI {
 		User user = this.userService.login(loginDto);
 		if (user != null) {
 			return new ResponseEntity<UserDTO>(new UserDTO(user.getId(), user.getUsername(), user.getFirstName(),
-					user.getLastName(), user.getPassword(), user.getEmail(), user.getRole()), HttpStatus.OK);
+					user.getLastName(), user.getPassword(), user.getEmail(), user.getRole(), user.getOrder()), HttpStatus.OK);
 		}
 
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -73,7 +73,7 @@ public class UserAPI {
 		User user = this.userService.register(registerDto);
 		if (user != null) {
 			return new ResponseEntity<>(new UserDTO(user.getId(), user.getUsername(), user.getFirstName(),
-					user.getLastName(), user.getPassword(), user.getEmail(), user.getRole()), HttpStatus.OK);
+					user.getLastName(), user.getPassword(), user.getEmail(), user.getRole(), user.getOrder()), HttpStatus.OK);
 		}
 
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
