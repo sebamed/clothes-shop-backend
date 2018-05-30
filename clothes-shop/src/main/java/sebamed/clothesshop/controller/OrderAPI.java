@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import sebamed.clothesshop.domain.Order;
@@ -24,7 +24,6 @@ import sebamed.clothesshop.service.UserService;
 
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin("http://localhost:4200")
 public class OrderAPI {
 
 	@Autowired
@@ -68,22 +67,24 @@ public class OrderAPI {
 
 	@PostMapping("/update")
 	public ResponseEntity<OrderDTO> handleUpdateOrder(@RequestBody Object object) {
-		System.out.println(object);
+		System.out.println(object.toString());
 		try {
-			OrderDTO orderDto = new ObjectMapper().readValue(object.toString(), OrderDTO.class);
+			// kastovanje u OrderDTO
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+			OrderDTO orderDto = mapper.readValue(mapper.writeValueAsString(object), OrderDTO.class);
 			System.out.println(orderDto);
+			Order o = this.orderService.findOneById(orderDto.getUser().getOrder().getId());
+			if(o != null) {
+				o.setDelivered(orderDto.getDelivered());
+				o.setDescription(orderDto.getDescription());
+				o.setProducts(orderDto.getProducts());
+				return new ResponseEntity<OrderDTO>(orderDto, HttpStatus.OK);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
-//		Order o = this.orderService.findOneById(orderDto.getUser().getOrder().getId());
-//		if(o != null) {
-//			o.setDelivered(orderDto.isDelivered());
-//			o.setDescription(orderDto.getDescription());
-//			o.setProducts(orderDto.getProducts());
-//			return new ResponseEntity<OrderDTO>(orderDto, HttpStatus.OK);
-//		}
-//		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }
