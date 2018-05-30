@@ -76,6 +76,12 @@ public class Order {
 	public void setProducts(List<Product> prooducts) {
 		this.products = prooducts;
 	}
+	
+	public void addProducts(List<Product> products) {
+		for(Product p : products) {
+			this.products.add(p);
+		}
+	}
 
 	public User getUser() {
 		return user;
