@@ -1,7 +1,5 @@
 package sebamed.clothesshop.service;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
 import java.io.File;
 import java.util.List;
 
@@ -14,8 +12,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import sebamed.clothesshop.domain.Image;
+import sebamed.clothesshop.domain.Order;
 import sebamed.clothesshop.domain.Product;
 import sebamed.clothesshop.dto.ProductDTO;
+import sebamed.clothesshop.repository.OrderRepository;
 import sebamed.clothesshop.repository.ProductRepository;
 
 @Service
@@ -29,6 +29,9 @@ public class ProductService {
 
 	@Autowired
 	ImageService imageService;
+	
+	@Autowired
+	OrderRepository orderRepository;
 
 	public Product save(Product product) {
 		return this.productRepository.save(product);
@@ -48,6 +51,15 @@ public class ProductService {
 			Image i = this.imageService.findOne(p.getImage().getId());
 			if(i != null) {
 				this.imageService.remove(i.getId());
+			}
+			for(Order o : this.orderRepository.findAll()) {
+				for(Product pr : this.findAll()) {
+					if(pr == p) {
+						o.getProducts().remove(pr.getId());
+						o.setProducts(o.getProducts());
+						this.orderRepository.save(o);
+					}
+				}
 			}
 			this.productRepository.delete(p);
 		}
