@@ -1,10 +1,10 @@
 package sebamed.clothesshop.controller;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.mail.internet.InternetAddress;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 
+import it.ozimov.springboot.mail.model.Email;
+import it.ozimov.springboot.mail.model.defaultimpl.DefaultEmail;
+import it.ozimov.springboot.mail.service.EmailService;
 import sebamed.clothesshop.domain.Order;
 import sebamed.clothesshop.domain.User;
 import sebamed.clothesshop.dto.OrderDTO;
@@ -37,6 +38,9 @@ public class OrderAPI {
 
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	EmailService emailService;
 
 	@GetMapping("/")
 	public ResponseEntity<List<OrderDTO>> handleGetAllOrders() {
@@ -88,34 +92,50 @@ public class OrderAPI {
 	@PostMapping("deliver")
 	public ResponseEntity<OrderDTO> handleDeliver(@RequestBody OrderDTO orderDto) {
 		Order o = this.orderService.findOneById(orderDto.getId());
-		if(o != null) {
+		if (o != null) {
 			o.setDelivered(true);
 			this.orderService.save(o);
 			User u = this.userService.findOne(orderDto.getUser().getId());
-			if(u != null) {
+			if (u != null) {
 				u.setOrder(o);
 				this.userService.save(u);
 			}
-			
-			return new ResponseEntity<OrderDTO>(new OrderDTO(o.getId(), o.getDescription(), o.getUser(), o.getProducts(), o.isDelivered(), o.getCheckout()), HttpStatus.OK);
+
+			return new ResponseEntity<OrderDTO>(new OrderDTO(o.getId(), o.getDescription(), o.getUser(),
+					o.getProducts(), o.isDelivered(), o.getCheckout()), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@PostMapping("checkout")
 	public ResponseEntity<OrderDTO> handleCheckout(@RequestBody OrderDTO orderDto) {
 		Order o = this.orderService.findOneById(orderDto.getId());
-		if(o != null) {
+		if (o != null) {
 			o.setDescription(orderDto.getDescription());
 			o.setCheckout(true);
 			this.orderService.save(o);
 			User u = this.userService.findOne(orderDto.getUser().getId());
-			if(u != null) {
+			if (u != null) {
 				u.setOrder(this.orderService.createNew(u));
 				this.userService.save(u);
 			}
-			
-			return new ResponseEntity<OrderDTO>(new OrderDTO(o.getId(), o.getDescription(), o.getUser(), o.getProducts(), o.isDelivered(), o.getCheckout()), HttpStatus.OK);
+
+			Email email;
+			try {
+				email = DefaultEmail.builder()
+						.from(new InternetAddress("spring.angular123", "Spring Boot Angular App"))
+						.to(Lists.newArrayList(new InternetAddress(o.getUser().getEmail(), o.getUser().getUsername())))
+						.subject("Your order is ready!")
+						.body(String.format("Dear " + o.getUser().getFirstName() + ", your order is ready. " + o.toString()))
+						.encoding("UTF-8").build();
+				this.emailService.send(email);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+
+
+			return new ResponseEntity<OrderDTO>(new OrderDTO(o.getId(), o.getDescription(), o.getUser(),
+					o.getProducts(), o.isDelivered(), o.getCheckout()), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
