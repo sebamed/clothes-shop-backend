@@ -14,13 +14,15 @@ public class OrderDTO {
 	private User user;
 	private List<Product> products;
 	private boolean delivered;
+	private boolean checkout;
 
 	public OrderDTO() {
 		super();
 		this.products = new ArrayList<Product>();
 	}
 
-	public OrderDTO(Long id, String description, User user, List<Product> products, boolean delivered) {
+	public OrderDTO(Long id, String description, User user, List<Product> products, boolean delivered,
+			boolean checkout) {
 		super();
 		this.products = new ArrayList<Product>();
 		this.id = id;
@@ -28,6 +30,15 @@ public class OrderDTO {
 		this.user = user;
 		this.products = products;
 		this.delivered = delivered;
+		this.checkout = checkout;
+	}
+
+	public boolean getCheckout() {
+		return checkout;
+	}
+
+	public void setCheckout(boolean checkout) {
+		this.checkout = checkout;
 	}
 
 	public Long getId() {
@@ -76,6 +87,4 @@ public class OrderDTO {
 				+ ", delivered=" + delivered + "]";
 	}
 
-	
-	
 }

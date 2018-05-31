@@ -22,6 +22,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import sebamed.clothesshop.domain.Order;
+import sebamed.clothesshop.domain.User;
 import sebamed.clothesshop.dto.OrderDTO;
 import sebamed.clothesshop.service.OrderService;
 import sebamed.clothesshop.service.UserService;
@@ -41,7 +42,8 @@ public class OrderAPI {
 	public ResponseEntity<List<OrderDTO>> handleGetAllOrders() {
 		List<OrderDTO> ordersDto = new ArrayList<OrderDTO>();
 		for (Order o : this.orderService.findAll()) {
-			ordersDto.add(new OrderDTO(o.getId(), o.getDescription(), o.getUser(), o.getProducts(), o.isDelivered()));
+			ordersDto.add(new OrderDTO(o.getId(), o.getDescription(), o.getUser(), o.getProducts(), o.isDelivered(),
+					o.getCheckout()));
 		}
 		if (ordersDto.size() > 0) {
 			return new ResponseEntity<List<OrderDTO>>(ordersDto, HttpStatus.OK);
@@ -53,9 +55,8 @@ public class OrderAPI {
 	public ResponseEntity<OrderDTO> handleGetOrder(@PathVariable("id") Long id) {
 		Order o = this.orderService.findOneById(id);
 		if (o != null) {
-			return new ResponseEntity<OrderDTO>(
-					new OrderDTO(o.getId(), o.getDescription(), o.getUser(), o.getProducts(), o.isDelivered()),
-					HttpStatus.OK);
+			return new ResponseEntity<OrderDTO>(new OrderDTO(o.getId(), o.getDescription(), o.getUser(),
+					o.getProducts(), o.isDelivered(), o.getCheckout()), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
@@ -71,23 +72,50 @@ public class OrderAPI {
 	}
 
 	@PostMapping("/update")
-	public ResponseEntity<OrderDTO> handleUpdateOrder(@RequestBody Object object) {
-		try {
-			// kastovanje u OrderDTO
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-			OrderDTO orderDto = mapper.readValue(mapper.writeValueAsString(object), OrderDTO.class);
-			System.out.println(orderDto.getProducts().size());
-			Order o = this.orderService.findOneById(orderDto.getId());
-			if (o != null) {
-				o.setDelivered(orderDto.getDelivered());
-				o.setDescription(orderDto.getDescription());
-				o.setProducts(orderDto.getProducts());
-				this.orderService.save(o);
-				return new ResponseEntity<OrderDTO>(orderDto, HttpStatus.OK);
+	public ResponseEntity<OrderDTO> handleUpdateOrder(@RequestBody OrderDTO orderDto) {
+		Order o = this.orderService.findOneById(orderDto.getId());
+		if (o != null) {
+			o.setDelivered(orderDto.getDelivered());
+			o.setDescription(orderDto.getDescription());
+			o.setProducts(orderDto.getProducts());
+			o.setCheckout(orderDto.getCheckout());
+			this.orderService.save(o);
+			return new ResponseEntity<OrderDTO>(orderDto, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+
+	@PostMapping("deliver")
+	public ResponseEntity<OrderDTO> handleDeliver(@RequestBody OrderDTO orderDto) {
+		Order o = this.orderService.findOneById(orderDto.getId());
+		if(o != null) {
+			o.setDelivered(true);
+			this.orderService.save(o);
+			User u = this.userService.findOne(orderDto.getUser().getId());
+			if(u != null) {
+				u.setOrder(o);
+				this.userService.save(u);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			
+			return new ResponseEntity<OrderDTO>(new OrderDTO(o.getId(), o.getDescription(), o.getUser(), o.getProducts(), o.isDelivered(), o.getCheckout()), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@PostMapping("checkout")
+	public ResponseEntity<OrderDTO> handleCheckout(@RequestBody OrderDTO orderDto) {
+		Order o = this.orderService.findOneById(orderDto.getId());
+		if(o != null) {
+			o.setDescription(orderDto.getDescription());
+			o.setCheckout(true);
+			this.orderService.save(o);
+			User u = this.userService.findOne(orderDto.getUser().getId());
+			if(u != null) {
+				u.setOrder(this.orderService.createNew(u));
+				this.userService.save(u);
+			}
+			
+			return new ResponseEntity<OrderDTO>(new OrderDTO(o.getId(), o.getDescription(), o.getUser(), o.getProducts(), o.isDelivered(), o.getCheckout()), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}

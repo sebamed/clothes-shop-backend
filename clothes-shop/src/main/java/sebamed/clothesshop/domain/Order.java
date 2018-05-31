@@ -37,11 +37,15 @@ public class Order {
 
 	@Column(name = "delivered")
 	private boolean delivered;
+	
+	@Column(name = "checkedout")
+	private boolean checkout;
 
 	public Order() {
 		super();
 		this.products = new ArrayList<Product>();
 		this.delivered = false;
+		this.checkout = false;
 	}
 
 	public Order(Long id, String description, List<Product> products, User user) {
@@ -52,6 +56,15 @@ public class Order {
 		this.products = products;
 		this.user = user;
 		this.delivered = false;
+		this.checkout = false;
+	}
+	
+	public boolean getCheckout() {
+		return checkout;
+	}
+
+	public void setCheckout(boolean checkout) {
+		this.checkout = checkout;
 	}
 
 	public Long getId() {
