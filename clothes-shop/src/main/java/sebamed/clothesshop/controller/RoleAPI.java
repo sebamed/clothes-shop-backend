@@ -3,7 +3,7 @@ package sebamed.clothesshop.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +20,20 @@ public class RoleAPI {
 
 	@Autowired
 	RoleService roleService;
+	
+	@GetMapping("/generate")
+	public ResponseEntity<RoleDTO> handleGenerateRoles(){
+		Role r1 = new Role();
+		r1.setName("admin");
+		
+		Role r2 = new Role();
+		r2.setName("user");
+		
+		this.roleService.save(r1);
+		this.roleService.save(r2);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 	
 	@RequestMapping("/{id}")
 	public ResponseEntity<RoleDTO> handleGetOneRole(@PathVariable("id") Long id){

@@ -26,6 +26,32 @@ public class CategoryAPI {
 	@Autowired
 	CategoryService categoryService;
 	
+	@GetMapping("/generate")
+	public ResponseEntity<CategoryDTO> handleGenerateCategories(){
+		Category c = new Category();
+		c.setName("Shoes");
+		
+		Category c2 = new Category();
+		c2.setName("Shirts");
+		
+		Category c3 = new Category();
+		c3.setName("Jeans");
+		
+		Category c4 = new Category();
+		c4.setName("Jackets");
+		
+		Category c5 = new Category();
+		c5.setName("Hats");
+		
+		this.categoryService.save(c);
+		this.categoryService.save(c2);
+		this.categoryService.save(c3);
+		this.categoryService.save(c4);
+		this.categoryService.save(c5);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<CategoryDTO> handleGetOneCategory(@PathVariable("id") Long id){
 		Category c = this.categoryService.findOneById(id);
